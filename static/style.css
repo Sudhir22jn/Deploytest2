@@ -1,0 +1,224 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Optional for centering other content */
+    align-items: center; /* Optional for centering other content */
+}
+
+.chat-container {
+    width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    position: fixed; /* Fixed positioning for bottom-right placement */
+    bottom: 20px; /* Distance from the bottom */
+    right: 20px; /* Distance from the right */
+    overflow: hidden;
+    z-index: 1000; /* Ensure it stays on top of other elements */
+}
+
+.chat-header {
+    background-color:#F6A089;
+    color: Black;
+    font-weight: bold;
+    padding: 10px 15px;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header-title {
+    font-weight: bold;
+}
+
+.chat-header-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.chat-control-button {
+    background-color: transparent; /* No background color */
+    color: white; /* Button color */
+    border: none; /* Remove border */
+    font-size: 18px; /* Button size */
+    cursor: pointer; /* Pointer cursor on hover */
+    padding: 5px 10px; /* Add padding */
+    border-radius: 5px; /* Round corners */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.chat-control-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+}
+
+
+.chat-display {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+    max-height: 400px; /* Set a maximum height for the chat display */
+}
+
+
+.bot-message, .user-message {
+    margin-bottom: 10px;
+}
+
+.bot-message {
+    display: flex; /* Flexbox for aligning image and text */
+    align-items: flex-start;
+    color: #333;
+    background: #f4f4f4;
+    padding: 8px 12px;
+    border-radius: 5px;
+    align-self: flex-start;
+}
+
+.user-message {
+    text-align: left;
+    background: #FBEAE6;
+    color: black;
+    padding: 8px 12px;
+    border-radius: 5px;
+    align-self: flex-end;
+    max-width: 40%; /* Restrict maximum width for readability */
+    word-wrap: break-word; /* Ensure long words break */
+    margin: 5px 0; /* Add spacing between messages */
+    margin-left: auto;
+}
+
+.chatbot-icon {
+    width: 50px; /* Adjust size */
+    height: 50px;
+    border-radius: 50%; /* Circular image */
+    margin-right: 10px; /* Space between image and text */
+    flex-shrink: 0; /* Prevent the image from shrinking */
+}
+
+.message-content {
+    background: #f4f4f4; /* Matches the bot-message background */
+    padding: 0;
+    font-size: 14px;
+    max-width: calc(100% - 50px); /* Prevents text overflow */
+}
+
+.typing-indicator {
+    display: none;
+    font-style: italic;
+    font-size: 14px;
+    color: gray;
+    margin-top: 10px;
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+#send-button {
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#send-button:hover {
+    background-color: #005bb5;
+}
+/* Styles for option buttons */
+.options {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px; /* Add spacing below the options */
+}
+
+.option-button {
+    padding: 10px 20px;
+    color: #003366; /* Blue shade for the title */
+    background-color: transparent; /* Transparent background */
+    border: 1px solid #003366; /* Blue shade for the border */
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 2px 4px 6px rgba(0, 0, 6, 0.3); /* Shadow effect */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.option-button:hover {
+    background-color:  #f4f4f4; /* Slight blue tint on hover */
+    color: #0056b3; /* Darker blue for the title on hover */
+    border-color: #0056b3; /* Darker blue for the border on hover */
+}
+
+
+.option-button.active-option {
+    background-color: #f4f4f4; /* Darker blue when clicked */
+}
+.suboptions {
+    margin-top: 10px; /* Space above suboptions */
+    margin-bottom: 15px; /* Space below suboptions */
+    display: flex;
+    flex-direction: column; /* Stack suboptions vertically */
+    gap: 10px; /* Space between each suboption */
+}
+
+.suboption-button {
+    padding: 10px 20px;
+    color: #003366; /* Blue shade for the title */
+    background-color: transparent; /* Transparent background */
+    border: 1px solid #003366; /* Blue shade for the border */
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 2px 4px 6px rgba(0, 0, 6, 0.3); /* Shadow effect */
+    margin-top: 10px;
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.suboption-button:hover {
+    background-color:  #f4f4f4; /* Slight blue tint on hover */
+    color: #0056b3; /* Darker blue for the title on hover */
+    border-color: #0056b3; /* Darker blue for the border on hover */
+}
+
+/* Welcome message styling */
+.bot-message.welcome-message {
+    font-weight: bold;       /* Makes the text bold */
+    font-size: 1.0rem;       /* Adjusts font size (larger than default) */
+    color: #333;             /* Optional: Customize the text color */
+    margin-bottom: 10px;     /* Adds spacing below the message */
+    line-height: 1.5;        /* Improves readability */
+}
+
+.hidden {
+    display: none;
+}
+
+
+#minimize-button, #maximize-button, #clear-button {
+    border: none;
+    background-color: #F6A089;
+    font-size: 15px;
+}

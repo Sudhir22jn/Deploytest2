@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot UI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="chat-container" class="chat-container">
+        <div class="chat-header">
+            <span>Ask Softdel Chatbot</span>
+            <div class="chat-controls">
+                <button id="minimize-button" title="Minimize">−</button>
+                <button id="maximize-button" title="Maximize">□</button>
+                <button id="clear-button" title="Clear">🗑️</button>
+            </div>
+        </div>
+        <div id="chat-display" class="chat-display"></div>
+        <div id="typing-indicator" class="typing-indicator" style="display: none;">
+            Chatbot is typing...
+        </div>
+        <div class="chat-input-container">
+            <input id="user-input" type="text" placeholder="Type your message..." />
+            <button id="send-button">▶</button>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
