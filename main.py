@@ -3,7 +3,7 @@ import json
 from command import commands  # Import the commands dictionary
 
 # Path to JSON file
-file_paths = r"C:\Users\Administrator\PycharmProjects\chatbotUI\responses.json"
+file_paths = r"D:\Git Projects\AI Chatbot\AIChatbot\responses.json"
 
 
 def load_responses(file_paths):
