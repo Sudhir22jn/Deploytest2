@@ -1,9 +1,8 @@
-document.addEventListener("DOMContentLoaded", initializeChat);
+document.addEventListener("DOMContentLoaded", initializeChat);// Wait for the documents to be fully loaded before initializing the chat
 
-document.getElementById("send-button").addEventListener("click", sendMessage);
-document.getElementById("clear-button").addEventListener("click", clearChat);
-document.getElementById('minimize-button').addEventListener("click", minimize);
-document.getElementById('maximize-button').addEventListener("click", maximize);
+document.getElementById("send-button").addEventListener("click", sendMessage);// Attach event listener to the send button
+// document.getElementById("clear-button").addEventListener("click", clearChat);
+// document.getElementById('minimize-button').addEventListener("click", minimize);
 document.getElementById("user-input").addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Prevent default form submission
@@ -22,7 +21,7 @@ function initializeChat() {
             How can I assist you today?
         </div>
         <div class="bot-message">
-            Chatbot: Don't know what to ask? Here are some suggestions:
+            Don't know what to ask? Here are some suggestions:
         </div>
         <div class="options">
             <button class="option-button" onclick="handleOptionClick(this, 'products')">Products</button>
@@ -35,9 +34,15 @@ function initializeChat() {
 }
 
 function handleOptionClick(button, message) {
-    // Change the button's color
     const optionButtons = document.querySelectorAll(".option-button");
-    optionButtons.forEach((btn) => btn.classList.remove("active-option"));
+
+    // Disable all main option buttons
+    optionButtons.forEach((btn) => {
+        btn.disabled = true;
+        btn.classList.remove("active-option");
+    });
+
+    // Highlight the clicked button
     button.classList.add("active-option");
 
     const chatDisplay = document.getElementById("chat-display");
@@ -45,21 +50,26 @@ function handleOptionClick(button, message) {
 
     // Add chatbot message introducing suboptions
     if (message === "products") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: We offer an exceptional range of products. Here's the list for you to explore:
-        </div>`;
+        const botResponse = createBotMessage("Here are some of our Products:");
+        chatDisplay.innerHTML += botResponse;
+
     } else if (message === "services") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Our services are designed to cater to your needs. Here are the details:
-        </div>`;
+        const botResponse = createBotMessage("Our services are designed to cater to your needs. Here are the details:");
+        chatDisplay.innerHTML += botResponse;
+
     } else if (message === "about company") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Let me share some information about our company. Softdel is a leading technology company specializing in IoT, smart building solutions, and protocol engineering:
-        </div>`;
+        const botResponse = createBotMessage("Let me share some information about our company. Softdel is a leading technology company specializing in IoT, smart building solutions, and protocol engineering:");
+        chatDisplay.innerHTML += botResponse;
+
     } else if (message === "contact us") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: You can reach us at:\nEmail: info@softdel.com\n, Phone: +1 (123) 456-7890\n, Address: 123 Tech Park, Pune, India.
-        </div>`;
+         const contactMsg = `You can reach us at:<br>
+                        Email: info@softdel.com<br>
+                        Phone: +91-20 6701 0001<br>
+                        Address: www.softdel.com
+Softdel Systems Private Limited
+3rd Floor, Pentagon P4 Magarpatta City, Hadapsar, Pune, Maharashtra 411028, India.`;
+            chatDisplay.innerHTML += `<div class="user-message">You [${currentTime}]: ${option}</div>`;
+            chatDisplay.innerHTML += createBotMessage(contactMsg, new Date().toLocaleTimeString());
     }
 
     // Display suboptions
@@ -67,24 +77,32 @@ function handleOptionClick(button, message) {
     if (message === "products") {
         subOptionsHTML = `
             <div class="suboptions">
-                <button class="option-button" onclick="handleSubOptionClick('Communication protocol stacks')">Communication protocol stacks</button>
-                <button class="option-button" onclick="handleSubOptionClick('IoT Gateway & Platform')">IoT Gateway & Platform</button>
-                <button class="option-button" onclick="handleSubOptionClick('BACnet Simulator')">BACnet Simulator</button>
+                <button class="option-button" onclick="handleSubOptionClickWithDisable(this,'Communication protocol stacks')">Communication protocol stacks</button>
+                <button class="option-button" onclick="handleSubOptionClickWithDisable(this,'IoT Gateway & Platform')">IoT Gateway & Platform</button>
+                <button class="option-button" onclick="handleSubOptionClickWithDisable(this,'BACnet Simulator')">BACnet Simulator</button>
             </div>`;
     } else if (message === "services") {
         subOptionsHTML = `
             <div class="suboptions">
-                <button class="option-button" onclick="handleSubOptionClick('Product Engineering')">Product Engineering</button>
-                <button class="option-button" onclick="handleSubOptionClick('Quality Engineering')">Quality Engineering</button>
-                <button class="option-button" onclick="handleSubOptionClick('Centers of Excellence')">Center of Excellence</button>
+                <button class="option-button" onclick="handleSubOptionClickWithDisable(this,'Product Engineering')">Product Engineering</button>
+                <button class="option-button" onclick="handleSubOptionClickWithDisable(this,'Quality Engineering')">Quality Engineering</button>
+                <button class="option-button" onclick="handleSubOptionClickWithDisable(this,'Centers of Excellence')">Center of Excellence</button>
             </div>`;
     }
-    chatDisplay.innerHTML += subOptionsHTML;
+      chatDisplay.innerHTML += subOptionsHTML;
 
     // Scroll to the bottom of the chat
-    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+      chatDisplay.scrollTop = chatDisplay.scrollHeight;
 }
+function handleSubOptionClickWithDisable(buttonx, messagex) {
+    alert('Funciton working correct');
+    // Disable all buttons inside the same parent container
+    const siblingButtons1 = buttonx.parentElement.querySelectorAll("button");
+    siblingButtonsx.forEach(btn => btn.disabled = true);
 
+    // Call your original function
+    handleSubOptionClick(messagex);
+}
 function sendMessage() {
     const userInput = document.getElementById("user-input").value.trim();
     if (userInput === "") return; // Do nothing for empty input
@@ -165,94 +183,15 @@ function minimize() {
     }
 }
 
-function maximize() {
-    if (isMinimized) {
-        const chatContainer = document.getElementById("chat-container");
-        chatContainer.style.position = "fixed"; // Restore position to fixed
-        chatContainer.style.bottom = "10px"; // Keep it at the bottom
-        chatContainer.style.right = "10px"; // Keep it on the right
-        chatContainer.style.width = "400px"; // Reset width
-        chatContainer.style.height = "500px"; // Reset height
-        initializeChat(); // Reload chat
-        isMinimized = false; // Update state
-    }
-}
-function handleSubOptionClick(message) {
-    const chatDisplay = document.getElementById("chat-display");
-    const currentTime = getCurrentTime();
 
-    // Add the user's selected suboption
-    chatDisplay.innerHTML += `<div class="user-message">You [${currentTime}]: ${message}</div>`;
+// 🔹 New helper function that disables all sibling buttons once one is clicked
+function handleSubSubOptionClickWithDisable(button, message) {
+    // Disable all buttons inside the same parent container
+    const siblingButtons = button.parentElement.querySelectorAll("button");
+    siblingButtons.forEach(btn => btn.disabled = true);
 
-    // Display additional options based on the selected suboption
-    if (message === "Communication protocol stacks") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Here are some quality options for Communication protocol stacks:
-        </div>
-        <div class="sub-suboptions">
-            <button class="suboption-button" onclick="handleSubSubOptionClick('BACnet Stack – softBAC')">BACnet Stack – softBAC</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Modbus Stack – SoftMOD')">Modbus Stack – SoftMOD</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('HART Stack – softHARTKNX Protocol')">HART Stack – softHARTKNX Protocol</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('DMX Stack – SoftDMX')">DMX Stack – SoftDMX</button>
-        </div>`;
-    } else if (message === "IoT Gateway & Platform") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Here are some quality options for IoT Gateway & Platform:
-        </div>
-        <div class="sub-suboptions">
-            <button class="suboption-button" onclick="handleSubSubOptionClick('EdificeEdge – IoT Gateway')">EdificeEdge – IoT Gateway</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('EdificePlus - Enterprise Platform')">EdificePlus - Enterprise Platform</button>
-        </div>`;
-    } else if (message === "BACnet Simulator") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Here are some quality options for BACnet Simulator:
-        </div>
-        <div class="sub-suboptions">
-            <button class="suboption-button" onclick="handleSubSubOptionClick('BOSS – BACnet Over IP Simulation System')">BOSS – BACnet Over IP Simulation System</button>
-
-        </div>`;
-    } else if (message === "Product Engineering") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Here are some quality options for Product Engineering:
-        </div>
-        <div class="sub-suboptions">
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Device Engineering')">Device Engineering</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('IoT Solutions and Services')">IoT Solutions and Services</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Platform Engineering')">Platform Engineering</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Managed Services')">Managed Services</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Industry 4.0')">Industry 4.0</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Custom Application Development')">Custom Application Development</button>
-        </div>`;
-    } else if (message === "Quality Engineering") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Here are some quality options for Quality Engineering:
-        </div>
-        <div class="sub-suboptions">
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Testing Services')">Testing Services</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('IoT Labs')">IoT Labs</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Functional Safety & Compliance')">Functional Safety & Compliance</button>
-        </div>`;
-    } else if (message === "Centers of Excellence") {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Here are some quality options for Centers of Excellence:
-        </div>
-        <div class="sub-suboptions">
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Data Analytics & AI')">Data Analytics & AI</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Cloud')">Cloud</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('Mobile')">Mobile</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('UI/UX')">UI/UX</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClick('BACnet')">BACnet</button>
-
-        </div>`;
-
-    } else {
-        chatDisplay.innerHTML += `<div class="bot-message">
-            Chatbot [${currentTime}]: Sorry, no further options available for "${message}".
-        </div>`;
-    }
-
-    // Scroll to the bottom of the chat
-    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    // Call your original function
+    handleSubSubOptionClick(message);
 }
 
 function handleSubSubOptionClick(option) {
@@ -314,3 +253,192 @@ function handleSubSubOptionClick(option) {
     // Scroll to the bottom of the chat
     chatDisplay.scrollTop = chatDisplay.scrollHeight;
 }
+function handleSubOptionClickWithDisable(button, message) {
+    // Disable all buttons inside the same parent container
+    const siblingButtons1 = button.parentElement.querySelectorAll("button");
+    siblingButtons1.forEach(btn => btn.disabled = true);
+
+    // Call your original function
+    handleSubOptionClick(message);
+}
+function createBotMessage(message) {
+    const currentTime = getCurrentTime();
+    return `
+        <div>
+            <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+                <div>
+                    <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+                </div>
+                <div class="ai-response-container mb-0" style="text-align: left;">
+                    ${message}
+                </div>
+            </div>
+            <div class="time-stamp-css w-85">${currentTime}</div>
+        </div>
+    `;
+}
+
+function handleSubOptionClick(message) {
+    const chatDisplay = document.getElementById("chat-display");
+    const currentTime = getCurrentTime();
+
+    // Add the user's selected suboption
+    chatDisplay.innerHTML += `
+    <div>
+    <div class="user-message">${message}</div>
+     <div class='time-stamp-css' >
+        ${currentTime}
+        </div>
+    <div>
+
+    `;
+
+    let optionsHTML = "";
+
+    if (message === "Communication protocol stacks") {
+        optionsHTML = `
+        <div>
+        <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div>
+               <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
+            <div class="ai-response-container mb-0" style="text-align: left;">
+                Here are some quality options for Communication protocol stacks:
+            </div>
+        </div>
+        <div class="time-stamp-css w-85">
+         ${currentTime}
+        </div>
+
+        <div class="sub-suboptions">
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'BACnet Stack – softBAC')">BACnet Stack – softBAC</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Modbus Stack – SoftMOD')">Modbus Stack – SoftMOD</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'HART Stack – softHARTKNX Protocol')">HART Stack – softHARTKNX Protocol</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'DMX Stack – SoftDMX')">DMX Stack – SoftDMX</button>
+        </div>`;
+    } else if (message === "IoT Gateway & Platform") {
+        optionsHTML = `
+        <div>
+        <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div>
+               <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
+            <div class="ai-response-container mb-0" style="text-align: left;">
+                Here are some quality options for IoT Gateway & Platform:
+            </div>
+        </div>
+        <div class="time-stamp-css w-85">
+         ${currentTime}
+        </div>
+
+
+        <div class="sub-suboptions">
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'EdificeEdge – IoT Gateway')">EdificeEdge – IoT Gateway</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'EdificePlus - Enterprise Platform')">EdificePlus - Enterprise Platform</button>
+        </div>`;
+    } else if (message === "BACnet Simulator") {
+        optionsHTML = `
+        <div>
+        <div class="bot-message mb-0"  >
+            <div>
+                <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
+            <div class="ai-response-container text-align-right mb-0" style ={{textAlign: left}}>
+                Here are some quality options for BACnet Simulator:
+            </div>
+        </div>
+        <div class='time-stamp-css w-85' >
+        ${currentTime}
+        </div>
+        </div>
+
+        <div class="sub-suboptions">
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'BOSS – BACnet Over IP Simulation System')">BOSS – BACnet Over IP Simulation System</button>
+        </div>`;
+    } else if (message === "Product Engineering") {
+        optionsHTML = `
+
+        <div>
+        <div class="bot-message mb-0"  >
+            <div>
+                <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
+            <div className="ai-response-container mb-0" style={{ textAlign: "left" }}>
+               Here are some quality options for Product Engineering:
+            </div>
+
+        </div>
+        <div class='time-stamp-css w-85' >
+        ${currentTime}
+        </div>
+        </div>
+        <div class="sub-suboptions">
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Device Engineering')">Device Engineering</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'IoT Solutions and Services')">IoT Solutions and Services</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Platform Engineering')">Platform Engineering</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Managed Services')">Managed Services</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Industry 4.0')">Industry 4.0</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Custom Application Development')">Custom Application Development</button>
+        </div>`;
+    } else if (message === "Quality Engineering") {
+        optionsHTML = `
+        <div>
+        <div class="bot-message mb-0"  >
+            <div>
+                <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
+            <div className="ai-response-container mb-0" style={{ textAlign: "left" }}>
+                Discover Softdel’s world-class quality services crafted to deliver excellence, innovation, and measurable impact.
+            </div>
+
+        </div>
+        <div class='time-stamp-css w-85' >
+        ${currentTime}
+        </div>
+        </div>
+        <div class="sub-suboptions">
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Testing Services')">Testing Services</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'IoT Labs')">IoT Labs</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Functional Safety & Compliance')">Functional Safety & Compliance</button>
+        </div>`;
+    } else if (message === "Centers of Excellence") {
+        optionsHTML = `
+        <div class="bot-message">
+            Chatbot [${currentTime}]: Here are some quality options for Centers of Excellence:
+        </div>
+        <div class="sub-suboptions">
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Data Analytics & AI')">Data Analytics & AI</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Cloud')">Cloud</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Mobile')">Mobile</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'UI/UX')">UI/UX</button>
+            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'BACnet')">BACnet</button>
+        </div>`;
+    } else {
+        optionsHTML = `
+        <div class="bot-message">
+             Sorry, no further options available for "${message}".
+        </div>`;
+    }
+
+    chatDisplay.innerHTML += optionsHTML;
+
+    // Scroll to the bottom of the chat
+    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+}
+
+//Minimize 
+const minimizeBtn = document.getElementById("chatbot-minimize");
+const avatar = document.getElementById("chatbot-avatar");
+const chatContainer = document.getElementById("chat-container"); // ✅ use this
+
+// When avatar is clicked → show chat & hide avatar
+avatar.addEventListener("click", () => {
+    chatContainer.style.display = "flex";  // show chat container
+    avatar.style.display = "none";         // hide avatar
+});
+
+// When minimize button is clicked → hide chat & show avatar
+minimizeBtn.addEventListener("click", () => {
+    chatContainer.style.display = "none";  // hide chat container
+    avatar.style.display = "flex";         // show avatar
+});

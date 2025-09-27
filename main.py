@@ -3,7 +3,7 @@ import json
 from command import commands  # Import the commands dictionary
 
 # Path to JSON file
-file_paths = r"D:\Git Projects\AI Chatbot\AIChatbot\responses.json"
+file_paths = r"C:\Users\Administrator\PycharmProjects\chatbotUI\responses.json"
 
 
 def load_responses(file_paths):
@@ -18,16 +18,15 @@ def load_responses(file_paths):
         print(f"Error: The file '{file_paths}' contains invalid JSON.")
         return {}
 
-
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/') # URL path http://localhost:5000/
 def home():
     return render_template('index.html')
 
 
-@app.route('/chat', methods=['POST'])
+@app.route('/chat', methods=['POST'])# URL path http://localhost:5000/chat
 def chat():
     user_input = request.json.get('user_input', '').lower()
     print(f"User input: {user_input}")  # Log user input
