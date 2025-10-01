@@ -62,17 +62,17 @@ function handleOptionClick(button, message) {
         chatDisplay.innerHTML += botResponse;
 
     } else if (message === "contact us") {
-         const contactMsg = `You can reach us at:<br>
-                        Email: info@softdel.com<br>
-                        Phone: +91-20 6701 0001<br>
-                        Address: www.softdel.com
+         const contactMsg = `<strong>You can reach us at:</strong><br><br>
+                        <strong>Email:</strong> info@softdel.com<br>
+                        <strong>Phone:</strong> +91-20 6701 0001<br>
+                        <strong>Address:</strong> www.softdel.com
 Softdel Systems Private Limited
 3rd Floor, Pentagon P4 Magarpatta City, Hadapsar, Pune, Maharashtra 411028, India.`;
             chatDisplay.innerHTML += `
             <div>
                 <div class="user-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
                     <div class="ai-response-container mb-0" style="text-align: left;">
-                        ${option}
+                        ${message}
                     </div>
                     <div>
                         <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
