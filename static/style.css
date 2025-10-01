@@ -250,7 +250,12 @@ display: flex;}
     margin-right: 10px; /* Space between image and text */
     flex-shrink: 0; /* Prevent the image from shrinking */
 }
-
+.user-message .chatbot-icon-in-ai-res {
+    margin-left: 10px;
+    margin-right: 0;
+}
+.user-message {justify-content: flex-end;}
+.user-message .ai-response-container{width: 100%;}
 .time-stamp-css{
    text-align: end;
     font-size: 10px;
@@ -347,8 +352,15 @@ display: flex;}
         overflow: hidden;
         z-index: 9999;
       }
-      .option-button, .suboption-button
-      .chat-input-container input{font-family: Ubuntu, sans-serif;}
+      .option-button, .suboption-button,
+      .chat-input-container input{font-family: Ubuntu, sans-serif !important;}
+      button.btnMinimize{
+            background-color: #a40063;
+            color: #fff;
+            font-size: 30px;
+            line-height: 15px;
+            border: 0px;
+        }
       .chatbot-header {
         background: #4CAF50;
         color: white;

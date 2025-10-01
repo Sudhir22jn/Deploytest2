@@ -68,7 +68,18 @@ function handleOptionClick(button, message) {
                         Address: www.softdel.com
 Softdel Systems Private Limited
 3rd Floor, Pentagon P4 Magarpatta City, Hadapsar, Pune, Maharashtra 411028, India.`;
-            chatDisplay.innerHTML += `<div class="user-message">You [${currentTime}]: ${option}</div>`;
+            chatDisplay.innerHTML += `
+            <div>
+                <div class="user-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+                    <div class="ai-response-container mb-0" style="text-align: left;">
+                        ${option}
+                    </div>
+                    <div>
+                        <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+                    </div>
+                </div>
+                <div class="time-stamp-css w-100">${currentTime}</div>
+            </div>`;
             chatDisplay.innerHTML += createBotMessage(contactMsg, new Date().toLocaleTimeString());
     }
 
@@ -111,7 +122,19 @@ function sendMessage() {
     const currentTime = getCurrentTime();
 
     // Display user message
-    chatDisplay.innerHTML += `<div class="user-message">You [${currentTime}]: ${userInput}</div>`;
+    chatDisplay.innerHTML += `
+    <div>
+        <div class="user-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div class="ai-response-container mb-0" style="text-align: left;">
+                ${userInput}
+            </div>
+            <div>
+                <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
+        </div>
+        <div class="time-stamp-css w-100">${currentTime}</div>
+    </div>
+    `;
 
     // Show typing indicator
     const typingIndicator = document.createElement("div");
@@ -119,6 +142,7 @@ function sendMessage() {
     typingIndicator.id = "typing-indicator";
     typingIndicator.textContent = "Chatbot is typing...";
     chatDisplay.appendChild(typingIndicator);
+    chatDisplay.scrollTop = chatDisplay.scrollHeight;
 
     // Send the message to the server
     fetch("/chat", {
@@ -137,7 +161,18 @@ function sendMessage() {
 
                 // Display bot response
                 const responseTime = getCurrentTime();
-                chatDisplay.innerHTML += `<div class="bot-message"><img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon"> Chatbot [${responseTime}]: ${data.response}</div>`;
+                chatDisplay.innerHTML += `
+                <div>
+                    <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+                        <div>
+                            <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+                        </div>
+                        <div class="ai-response-container mb-0" style="text-align: left;">
+                            ${data.response}
+                        </div>
+                    </div>
+                    <div class="time-stamp-css w-85">${currentTime}</div>
+                </div>`;
 
                 // Scroll to the bottom of chat display
                 chatDisplay.scrollTop = chatDisplay.scrollHeight;
@@ -147,7 +182,18 @@ function sendMessage() {
             console.error("Error:", error);
 
             // Display error message
-            chatDisplay.innerHTML += `<div class="bot-message">Chatbot: Sorry, an error occurred. Please try again later.</div>`;
+            chatDisplay.innerHTML += `
+            <div>
+                <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+                    <div>
+                        <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+                    </div>
+                    <div class="ai-response-container mb-0" style="text-align: left;">
+                        Sorry, an error occurred. Please try again later.
+                    </div>
+                </div>
+                <div class="time-stamp-css w-85">${currentTime}</div>
+            </div>`;
         });
 
     // Clear the input field
@@ -247,8 +293,30 @@ function handleSubSubOptionClick(option) {
     }
 
     // Add the information to the chat display
-    chatDisplay.innerHTML += `<div class="user-message">You [${currentTime}]: ${option}</div>`;
-    chatDisplay.innerHTML += `<div class="bot-message">Chatbot [${currentTime}]: ${info}</div>`;
+    chatDisplay.innerHTML += `
+    <div>
+        <div class="user-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div class="ai-response-container mb-0" style="text-align: left;">
+                ${option}
+            </div>
+            <div>
+                <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
+        </div>
+        <div class="time-stamp-css w-100">${currentTime}</div>
+    </div>`;
+    chatDisplay.innerHTML += `
+    <div>
+        <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div>
+                <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
+            <div class="ai-response-container mb-0" style="text-align: left;">
+                ${info}
+            </div>
+        </div>
+        <div class="time-stamp-css w-85">${currentTime}</div>
+    </div>`;
 
     // Scroll to the bottom of the chat
     chatDisplay.scrollTop = chatDisplay.scrollHeight;
@@ -285,11 +353,16 @@ function handleSubOptionClick(message) {
     // Add the user's selected suboption
     chatDisplay.innerHTML += `
     <div>
-    <div class="user-message">${message}</div>
-     <div class='time-stamp-css' >
-        ${currentTime}
+        <div class="user-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div class="ai-response-container mb-0" style="text-align: left;">
+                ${message}
+            </div>
+            <div>
+                <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
         </div>
-    <div>
+        <div class="time-stamp-css w-100">${currentTime}</div>
+    </div>
 
     `;
 
@@ -403,19 +476,31 @@ function handleSubOptionClick(message) {
         </div>`;
     } else if (message === "Centers of Excellence") {
         optionsHTML = `
-        <div class="bot-message">
-            Chatbot [${currentTime}]: Here are some quality options for Centers of Excellence:
+        <div>
+            <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+                <div>
+                    <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+                </div>
+                <div class="ai-response-container mb-0" style="text-align: left;">
+                    Here are some quality options for Centers of Excellence:
+                </div>
+            </div>
+            <div class="time-stamp-css w-85">${currentTime}</div>
         </div>
-        <div class="sub-suboptions">
-            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Data Analytics & AI')">Data Analytics & AI</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Cloud')">Cloud</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Mobile')">Mobile</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'UI/UX')">UI/UX</button>
-            <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'BACnet')">BACnet</button>
-        </div>`;
+            <div class="sub-suboptions">
+                <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Data Analytics & AI')">Data Analytics & AI</button>
+                <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Cloud')">Cloud</button>
+                <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'Mobile')">Mobile</button>
+                <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'UI/UX')">UI/UX</button>
+                <button class="suboption-button" onclick="handleSubSubOptionClickWithDisable(this,'BACnet')">BACnet</button>
+            </div>
+        `;
     } else {
         optionsHTML = `
         <div class="bot-message">
+            <div>
+                <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+            </div>
              Sorry, no further options available for "${message}".
         </div>`;
     }
