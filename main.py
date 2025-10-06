@@ -5,7 +5,7 @@ from command import commands          # Import the commands dictionary
 from qanstest import get_qan_answer  # Import QA function
 from datetime import datetime, timedelta
 from outlook_scheduler import schedule_teams_meeting
-
+import os
 
 # Path to JSON file
 file_paths = r"C:\Users\Administrator\PycharmProjects\chatbotUI\responses.json"
