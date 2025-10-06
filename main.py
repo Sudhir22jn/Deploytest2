@@ -142,8 +142,7 @@ def submit_schedule():
         return jsonify({"success": False})
 
 
-#if __name__ == "__main__":
-   # app.run(debug=True)
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 5000))  # Render assigns this in production
+    app.run(host="0.0.0.0", port=port)
 
