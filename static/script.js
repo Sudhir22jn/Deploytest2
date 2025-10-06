@@ -136,6 +136,12 @@ function sendMessage() {
     </div>
     `;
 
+    // 🔹 Check for schedule keywords BEFORE clearing input
+    const lowerInput = userInput.toLowerCase();
+    if (scheduleKeywords.some(keyword => lowerInput.includes(keyword))) {
+        showScheduleForm(); // Show schedule form
+    }
+
     // Show typing indicator
     const typingIndicator = document.createElement("div");
     typingIndicator.classList.add("bot-message");
@@ -147,41 +153,18 @@ function sendMessage() {
     // Send the message to the server
     fetch("/chat", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_input: userInput }),
     })
-        .then((response) => response.json())
-        .then((data) => {
-            setTimeout(() => {
-                // Remove typing indicator
-                const typingIndicator = document.getElementById("typing-indicator");
-                if (typingIndicator) chatDisplay.removeChild(typingIndicator);
+    .then((response) => response.json())
+    .then((data) => {
+        setTimeout(() => {
+            // Remove typing indicator
+            const typingIndicator = document.getElementById("typing-indicator");
+            if (typingIndicator) chatDisplay.removeChild(typingIndicator);
 
-                // Display bot response
-                const responseTime = getCurrentTime();
-                chatDisplay.innerHTML += `
-                <div>
-                    <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
-                        <div>
-                            <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
-                        </div>
-                        <div class="ai-response-container mb-0" style="text-align: left;">
-                            ${data.response}
-                        </div>
-                    </div>
-                    <div class="time-stamp-css w-85">${currentTime}</div>
-                </div>`;
-
-                // Scroll to the bottom of chat display
-                chatDisplay.scrollTop = chatDisplay.scrollHeight;
-            }, 1000); // Simulate delay
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-
-            // Display error message
+            // Display bot response
+            const responseTime = getCurrentTime();
             chatDisplay.innerHTML += `
             <div>
                 <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
@@ -189,14 +172,33 @@ function sendMessage() {
                         <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
                     </div>
                     <div class="ai-response-container mb-0" style="text-align: left;">
-                        Sorry, an error occurred. Please try again later.
+                        ${data.response}
                     </div>
                 </div>
                 <div class="time-stamp-css w-85">${currentTime}</div>
             </div>`;
-        });
 
-    // Clear the input field
+            // Scroll to bottom
+            chatDisplay.scrollTop = chatDisplay.scrollHeight;
+        }, 1000); // simulate delay
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+        chatDisplay.innerHTML += `
+        <div>
+            <div class="bot-message mb-0" style="display: flex; align-items: flex-start; gap: 10px;">
+                <div>
+                    <img src="/static/images/SVA.jfif" alt="Chatbot Icon" class="chatbot-icon-in-ai-res">
+                </div>
+                <div class="ai-response-container mb-0" style="text-align: left;">
+                    Sorry, an error occurred. Please try again later.
+                </div>
+            </div>
+            <div class="time-stamp-css w-85">${currentTime}</div>
+        </div>`;
+    });
+
+    // Clear input field
     document.getElementById("user-input").value = "";
 }
 
@@ -511,7 +513,7 @@ function handleSubOptionClick(message) {
     chatDisplay.scrollTop = chatDisplay.scrollHeight;
 }
 
-//Minimize 
+//Minimize
 const minimizeBtn = document.getElementById("chatbot-minimize");
 const avatar = document.getElementById("chatbot-avatar");
 const chatContainer = document.getElementById("chat-container"); // ✅ use this
@@ -527,3 +529,126 @@ minimizeBtn.addEventListener("click", () => {
     chatContainer.style.display = "none";  // hide chat container
     avatar.style.display = "flex";         // show avatar
 });
+// ======== Schedule Call Form Logic ========
+
+// Keywords that trigger showing the schedule form
+
+// Keywords that trigger the schedule form
+const scheduleKeywords = [
+    "schedule call",
+    "book a meeting",
+    "connect with executive",
+    "schedule a meeting",
+    "talk to representative",
+    "call with customer"
+];
+
+// Listen for send button
+document.getElementById("send-button").addEventListener("click", () => {
+    const userInput = document.getElementById("user-input").value.toLowerCase();
+    if (scheduleKeywords.some(keyword => userInput.includes(keyword))) {
+        showScheduleForm();
+    }
+});
+
+// Listen for Enter key
+document.getElementById("user-input").addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        const userInput = document.getElementById("user-input").value.toLowerCase();
+        if (scheduleKeywords.some(keyword => userInput.includes(keyword))) {
+            showScheduleForm();
+        }
+    }
+});
+
+// Show schedule form
+function showScheduleForm() {
+    const chatDisplay = document.getElementById("chat-display");
+
+    // Remove existing form if any
+    const existingForm = document.getElementById("schedule-form");
+    if (existingForm) existingForm.remove();
+
+    // Create form container
+    const formContainer = document.createElement("div");
+    formContainer.id = "schedule-form";
+    formContainer.className = "schedule-form";
+    formContainer.innerHTML = `
+        <h3>📞 Schedule a Call</h3>
+        <form id="callForm">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="email">Email ID:</label>
+            <input type="email" id="email" name="email" required />
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required />
+
+            <label for="time_from">Preferred Time (From):</label>
+            <input type="datetime-local" id="time_from" name="time_from" required />
+
+            <label for="time_to">Preferred Time (To):</label>
+            <input type="datetime-local" id="time_to" name="time_to" required />
+
+            <div class="form-buttons">
+                <button type="submit" id="submitForm">Submit</button>
+                <button type="button" id="cancelForm">Cancel</button>
+            </div>
+            <p id="formMessage" class="form-message"></p>
+        </form>
+    `;
+    chatDisplay.appendChild(formContainer);
+    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+
+    // Attach handlers
+    document.getElementById("cancelForm").addEventListener("click", hideScheduleForm);
+    document.getElementById("callForm").addEventListener("submit", submitScheduleForm);
+}
+
+// Hide schedule form
+function hideScheduleForm() {
+    const form = document.getElementById("schedule-form");
+    if (form) form.remove();
+}
+
+// Submit form handler
+async function submitScheduleForm(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value; // 24-hour input
+    const duration = parseInt(document.getElementById("duration").value); // in minutes
+
+    // Frontend validation
+    if (!name || !email || !phone || !date || !time || !duration || duration <= 0) {
+        document.getElementById("formMessage").textContent =
+            "⚠️ Please fill all fields correctly.";
+        return;
+    }
+
+    try {
+        const response = await fetch("/submit_schedule", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, phone, date, time, duration }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            document.getElementById("formMessage").textContent =
+                "✅ Meeting scheduled successfully!";
+            setTimeout(hideScheduleForm, 2000);
+        } else {
+            document.getElementById("formMessage").textContent =
+                "❌ Something went wrong. Please try again.";
+        }
+    } catch (error) {
+        document.getElementById("formMessage").textContent = "❌ Network error.";
+        console.error(error);
+    }
+}

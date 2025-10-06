@@ -396,3 +396,114 @@ display: flex;}
       #chat-container {
   display: none; /* hidden by default */
 }
+/* ====== Schedule Call Form Styling ====== */
+.schedule-form {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.schedule-form h3 {
+    margin-top: 0;
+    color: #A40063;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.schedule-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.schedule-form label {
+    font-weight: 600;
+    font-size: 13px;
+    color: #444;
+}
+
+/* 🎯 Updated Input Styles — text, email, tel, date, time, number, select */
+.schedule-form input[type="text"],
+.schedule-form input[type="email"],
+.schedule-form input[type="tel"],
+.schedule-form input[type="date"],
+.schedule-form input[type="time"],
+.schedule-form input[type="number"],
+.schedule-form select {
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+    font-family: Ubuntu, sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.schedule-form input:focus,
+.schedule-form select:focus {
+    border-color: #A40063;
+    box-shadow: 0 0 5px rgba(164, 0, 99, 0.3);
+}
+
+.schedule-form select {
+    appearance: none; /* Removes default arrow on some browsers */
+    cursor: pointer;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#submitForm,
+#cancelForm {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+}
+
+#submitForm {
+    background-color: #A40063;
+    color: #fff;
+}
+
+#submitForm:hover {
+    background-color: #870053;
+}
+
+#cancelForm {
+    background-color: #f4f4f4;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+#cancelForm:hover {
+    background-color: #e8e8e8;
+}
+
+.form-message {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #0078d4;
+}
+
+/* Animation for smooth entry */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
